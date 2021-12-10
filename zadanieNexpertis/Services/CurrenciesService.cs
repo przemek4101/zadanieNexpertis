@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using zadanieNexpertis.Entities;
 using zadanieNexpertis.Exceptions;
@@ -35,9 +36,13 @@ namespace zadanieNexpertis.Services
                 var client = new RestClient("http://api.nbp.pl/");
                 var requestCurrency = new RestRequest($"api/exchangerates/rates/a/{currency}/{DateTime.Today.ToString("yyyy-MM-dd")}/?format=json", Method.GET);
                 var clientResponse = await client.ExecuteAsync(requestCurrency);
-                if(!clientResponse.IsSuccessful)
+                if(clientResponse.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new BadRequestException("404 NotFound");
+                    throw new NotFoundException("404 NotFound");
+                }
+                if (clientResponse.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new BadRequestException("400 BadRequest");
                 }
                 var responseCurrency = JsonConvert.DeserializeObject<CurrencyDataDto>(clientResponse.Content);
 

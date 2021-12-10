@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using zadanieNexpertis.Entities;
+using zadanieNexpertis.Middleware;
 using zadanieNexpertis.Services;
 
 namespace zadanieNexpertis
@@ -48,6 +49,7 @@ namespace zadanieNexpertis
             });
 
             services.AddControllers();
+            services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<NexpertisAppSeeder>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICurrenciesService, CurrenciesService>();
@@ -67,16 +69,21 @@ namespace zadanieNexpertis
             app.UseResponseCaching();
             app.UseStaticFiles();
             seeder.Seed();
-
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "zadanieNexpertis v1"));
             }
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
+
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Restaurant API");
+            });
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

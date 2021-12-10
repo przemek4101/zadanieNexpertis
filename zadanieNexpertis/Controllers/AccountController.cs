@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using zadanieNexpertis.ModelsDto;
 using zadanieNexpertis.Services;
 
@@ -17,9 +18,9 @@ namespace zadanieNexpertis.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody] LoginDto dto)
+        public async Task<ActionResult> Login([FromBody] LoginDto dto)
         {
-            string token = _accountService.GenerateJwt(dto);
+            string token = await _accountService.GenerateJwtAsync(dto);
             return Ok(token);
         }
     }

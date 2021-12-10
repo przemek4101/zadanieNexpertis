@@ -1,9 +1,10 @@
-﻿using zadanieNexpertis.ModelsDto;
+﻿using System.Threading.Tasks;
+using zadanieNexpertis.ModelsDto;
 
 namespace zadanieNexpertis.Services
 {
     public interface IAccountService
     {
-        public string GenerateJwt(LoginDto dto);
+        public Task<string> GenerateJwtAsync(LoginDto dto);
     }
 }

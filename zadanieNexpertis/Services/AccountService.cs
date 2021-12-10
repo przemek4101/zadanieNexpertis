@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,9 @@ namespace zadanieNexpertis.Services
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
         }
-        public string GenerateJwt(LoginDto dto)
+        public async Task<string> GenerateJwtAsync(LoginDto dto)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.Name == dto.Username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Name == dto.Username);
             if(user == null)
             {
                 throw new BadRequestException("Invalid username or password");
