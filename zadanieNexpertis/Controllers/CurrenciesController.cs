@@ -21,8 +21,7 @@ namespace zadanieNexpertis.Controllers
         public async Task<ActionResult> Get(string data)
         {
             var output = await _currenciesService.GetDataCurrenciesAsync(data);
-            if (output == null) return NotFound("Your currency not exists {data}");
-            return Ok();
+            return Ok(output);
         }
     }
 }

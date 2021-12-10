@@ -79,8 +79,8 @@ namespace zadanieNexpertis
 
 
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "zadanieNexpertis v1"));
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "zadanieNexpertis v1"));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
